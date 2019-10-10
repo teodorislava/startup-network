@@ -1,0 +1,209 @@
+<div>
+  <app-navigation></app-navigation>
+  <div class="content-container container-fluid">
+    <div class="row">
+      <div class="col-4">
+
+      </div>
+      <div class="col-4">
+        <div class="hot" *ngIf="hotProject$ | async; let hp" >
+          <p class="name-hot">Hot Project !!!! &nbsp; <label class="name-name"> {{ hp.name }}</label> &nbsp;&nbsp;
+            <i class="fas fa-fire"></i>
+             <i class="fas fa-fire"></i>
+             <i class="fas fa-fire"></i>
+             <i class="fas fa-fire"></i>
+             <i class="fas fa-fire"></i>
+          </p>
+          <p class="hot-description">
+            {{ hp.description }}
+          </p>
+        </div>  
+      </div>
+      <div class="col-4">
+
+      </div>
+    </div>    
+    <div class="row search-project-container">
+      <div class="col-2">
+        <div class="button-container-1">
+          <button (click)="showSearch()" class="btn btn-secondary"> Search Projects </button>
+        </div>
+      </div>
+      <div *ngIf="search" class="col-5">
+        <input (keyup)="checkKeyName($event)" name="name-input" [(ngModel)]="name" type="text" class="form-control" placeholder="Search By Name.." aria-label="Post" aria-describedby="basic-addon1">
+      </div>
+      <div *ngIf="search" class="col-4">
+        <input (keyup)="checkKeyTech($event)" name="tech-input" [(ngModel)]="tech" type="text" class="form-control" placeholder="Search By Technology.." aria-label="Post" aria-describedby="basic-addon1">
+      </div>
+      <div *ngIf="search" class="col-1 button-container-2">
+        <button (click)="startSearch()" class="btn btn-secondary"><i class="fas fa-search"></i></button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="create-container col-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 create-project">
+                <h4 class="create-h"> Create New Project </h4>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-signature"></i></span>
+                  </div>
+                  <input name="name" [(ngModel)]="project.name" type="text" class="form-control" placeholder="Project name.." aria-label="Name" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Min &nbsp; <i class="fas fa-money-bill-wave"></i></span>
+                  </div>
+                  <input name="min" [(ngModel)]="project.fundinggoalmin" type="text" class="form-control" placeholder="Minimal amount of Funds.." aria-label="Name" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Max &nbsp; <i class="fas fa-money-bill-wave"></i></span>
+                  </div>
+                  <input name="max" [(ngModel)]="project.fundinggoalmax" type="text" class="form-control" placeholder="Maximal amount of Funds.." aria-label="Name" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-play"></i></span>
+                  </div>
+                  <input name="start" [(ngModel)]="project.startdate" type="text" class="form-control" placeholder="Start Date - d/M/yyyy" aria-label="Name" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="fas fa-stop"></i></span>
+                  </div>
+                  <input name="end" [(ngModel)]="project.enddate" type="text" class="form-control" placeholder="End Date - d/M/yyyy" aria-label="Name" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Description</span>
+                  </div>
+                  <textarea rows="5" name="description" [(ngModel)]="project.description" class="form-control" placeholder="Enter description..." aria-label="With textarea"></textarea>
+                </div>
+                <div class="button-container-3">
+                  <button (click)="createProject()" class="btn btn-secondary"> Create Project </button>
+                </div>
+            </div>
+            <div class="col-12 projects-you">
+              <h4 class="h">Projects You Might Like..</h4>
+              <div *ngFor="let p of projectsByTech$ | async" class="">
+                  <div class="hot">
+                      <p class="name-hot">
+                        Project Name: {{ p.name }}
+                      </p>
+                      <p class="des-p">Description:</p>
+                      <p class="hot-description">
+                        {{ p.description }}
+                      </p>
+                    </div>  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="search-container col-4">
+        <div class="container">
+          <h4 class="h"> Searched Projects.. </h4>
+          <div class="row" *ngFor="let p of searchedProjects$ | async">
+            <p (click)="showActiveSearchedProject(p.id)" class="name-name-name">Project Name: {{ p.name }}</p>
+            <div *ngIf="activeSearchedProject == p.id">
+              <p class="des-p">Description: {{ p.description }}</p>
+              <p>Funds: {{ p.fundsraised }}</p>
+              <p>Apply <i (click)="applyIndividual(p.id)"  class="fas fa-plus"></i></p>
+              <p>Apply as Team <i (click)="showTeams()" class="fas fa-users"></i></p>
+              <div *ngFor="let t of userTeams$ | async" class="row">
+                  <p class="apply-team" (click)="applyTeam(p.id, t.id)"> {{ t.name }} </p>
+              </div>
+              <p>
+                Add Investment:
+              </p>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">Percentage &nbsp; <i class="fas fa-percent"></i></span>                  
+                </div>
+                <input name="name" [(ngModel)]="investment.percentage" type="text" class="form-control" placeholder="Percentage.." aria-label="Name" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">Amount &nbsp;  <i class="fas fa-money-bill-wave"></i></span>
+                </div>
+                <input name="min" [(ngModel)]="investment.amount" type="text" class="form-control" placeholder="Amount.." aria-label="Name" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">$ &nbsp; <i class="fas fa-money-bill-wave"></i></span>
+                </div>
+                <input name="max" [(ngModel)]="investment.currency" type="text" class="form-control" placeholder="Currency.." aria-label="Name" aria-describedby="basic-addon1">
+              </div>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1"> <i class="fas fa-signature"></i></span>
+                </div>
+                <input name="max" [(ngModel)]="investment.contracttext" type="text" class="form-control" placeholder="Contract text.." aria-label="Name" aria-describedby="basic-addon1">
+              </div>
+              <div class="button-container-3">
+                <button (click)="addInvestment(p.id)" class="btn btn-secondary"> Invest </button>
+              </div>
+            </div>     
+          </div>        
+        </div>
+      </div>
+      <div class="your-container col-4">
+        <div class="container my-projects">
+          <h4 class="create-h">Your Projects</h4>
+          <div *ngFor="let p of projects$ | async" class="row your-project">
+            <div (click)="choseProjectDetails(p.id)" class="project-name-container col-12">
+              <p class="name-name-name">Project name: {{ p.name }}</p>
+            </div>
+            <div *ngIf="activeProject === p.id" class="col-12">
+              <p>
+                Description: {{ p.description }}
+              </p>
+              <p>
+                <button (click)="showApplicationsIndividuals(p.id)" class="btn btn-secondary"> Show Individuals</button> &nbsp; &nbsp;
+                <button (click)="showApplicationsTeams(p.id)" class="btn btn-secondary"> Show Teams</button>
+              </p>
+              <div *ngIf="showI" class="individuals-container">
+                <p> Individuals </p>
+                <div *ngFor="let i of getProjectIndividuals$ | async">
+                  <p *ngIf="i.status == 'denied'">
+                  <label class="red">{{ i.displayname }}</label> &nbsp;
+                  
+                  </p>
+                  <p *ngIf="i.status == 'accepted'">
+                      <label class="green">{{ i.displayname }}</label> &nbsp;
+                      
+                      </p>
+                      <p *ngIf="i.status == 'applied'">
+                          <label class="blue">{{ i.displayname }}</label> &nbsp;
+                          <i (click)="approveApplicationIndividuals(i.id, p.id)" class="fas fa-check blue"></i> &nbsp;
+                          <i (click)="denyApplicationIndividuals(i.id, p.id)" class="fas fa-times blue"></i>
+                          </p>
+                </div>
+              </div>
+              <div *ngIf="showT" class="teams-container">
+                <p>
+                  Teams
+                </p>
+                <div *ngFor="let t of getProjectTeams$ | async">
+                  <p *ngIf="t.status == 'accepted'">
+                    <label class="green">{{ t.name }}</label>&nbsp;
+                  </p>
+                  <p *ngIf="t.status == 'denied'">
+                      <label class="red">{{ t.name }}</label> &nbsp;
+                  </p>
+                  <p *ngIf="t.status == 'applied'">
+                      <label class="blue">{{ t.name }}</label>&nbsp;
+                      <i (click)="approveApplicationTeams(t.id, p.id)" class="fas fa-check blue"></i>&nbsp;
+                      <i (click)="denyApplicationTeams(t.id, p.id)" class="fas fa-times blue"></i>
+                    </p>
+                </div>
+              </div>              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

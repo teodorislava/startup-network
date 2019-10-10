@@ -1,0 +1,107 @@
+<div class="main-page-container">
+  <div *ngIf="!logged_in" class="container welcome-container">
+    <div class="row row-container">
+      <div class="col-2"></div>
+      <div class="col-8 main-message">
+        <p class="message-p">Welcome to TechStagram!</p> 
+        <p class="message-p">Login to see your profile and latest updates.</p>
+        <p class="message-p">If you are not part of our community it's time to change that!</p>
+        <p class="message-p">Register right now!</p>
+      </div>
+      <div class="col-2"></div>
+    </div>
+    <div class="row row-container-2">
+      <div class="col-6 login-button-container">
+        <button class="login-button" (click)="openLogin()">
+          Login <i class="fas fa-sign-in-alt"></i>
+        </button>
+      </div>
+      <div class="col-6 register-button-container">
+        <button class="register-button" (click)="openRegister()">
+          Register <i class="far fa-user"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="login" class="container container-l">
+    <div class="row">
+      <div class="col-3"></div>
+      <div class="col-6 form-login">
+          <form>
+              <div class="form-group">
+                <label for="exampleInputEmail1">Username</label>
+                <input name="login-email" [(ngModel)]="loginUser" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input name="login-pass" [(ngModel)]="loginPass" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+              </div>
+              <p class="login-button-p"><button (click)="tryLogin()" type="submit" class="login-button-submit">Login</button></p>
+            </form>
+      </div>
+      <div class="col-3"></div>
+    </div>
+  </div>
+  <div *ngIf="regSucc$ | async" class="alert alert-success alert-dismissible fade show my-alert" role="alert">
+      <strong>Holy guacamole!</strong> Login with your username!
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  <div *ngIf="register" class="container container-l">
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6 form-login">
+            <form>
+                <div class="form-group">
+                    <label for="exampleInputUsername">Username</label>
+                    <input name="register-username" [(ngModel)]="registerUser.username" type="text" class="form-control" id="exampleInputUsername" placeholder="Username">
+                  </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input name="register-email" [(ngModel)]="registerUser.email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input name="register-pass" [(ngModel)]="registerUser.password" type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputName">Name</label>
+                    <input name="register-name" [(ngModel)]="registerUser.displayname" type="text" class="form-control" id="exampleInputName" placeholder="Name">
+                </div>
+                  <div class="form-group">
+                      <label for="exampleInputlpw">Last Place of Work</label>
+                      <input name="register-last" [(ngModel)]="registerUser.lastplaceworked" type="text" class="form-control" id="exampleInputlpw" placeholder="Last place of work">
+                  </div>
+                  <div class="form-group">
+                      <label for="exampleInpute">Education</label>
+                      <input name="register-education" [(ngModel)]="registerUser.school" type="text" class="form-control" id="exampleInpute" placeholder="Education">
+                  </div>
+                  <div class="form-group">
+                      <label for="exampleInputp">Profession</label>
+                      <input name="register-profession" [(ngModel)]="registerUser.profession" type="text" class="form-control" id="exampleInputp" placeholder="Profession">
+                  </div>
+                  <div class="form-group">
+                      <label for="exampleInputli">Lives in</label>
+                      <input name="register-lives" [(ngModel)]="registerUser.livesin" type="text" class="form-control" id="exampleInputli" placeholder="Lives in">
+                  </div>
+                  <div class="form-group">
+                      <label for="exampleInputh">Hometown</label>
+                      <input name="register-hometown" [(ngModel)]="registerUser.hometown" type="text" class="form-control" id="exampleInputh" placeholder="Hometown">
+                  </div>
+                  <div class="form-group">
+                      <label for="exampleInputb">Birthday</label>
+                      <input name="register-birthday" [(ngModel)]="registerUser.birthday" type="text" class="form-control" id="exampleInputb" placeholder="d/M/yyyy">
+                  </div>
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1">Bio</label>
+                    <textarea name="register-bio" [(ngModel)]="registerUser.bio"class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                  </div>
+                <p class="login-button-p"><button (click)="tryRegister()" type="submit" class="login-button-submit">Register</button></p>
+              </form>
+        </div>
+        <div class="col-3"></div>
+      </div>
+    </div>
+</div>

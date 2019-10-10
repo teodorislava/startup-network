@@ -1,0 +1,29 @@
+.user-details-container {
+    color: #343a40;
+}
+.sign {
+    font-size: 30px;
+}
+.fp {
+    text-align: right;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+.fp-m {
+    text-align: right;
+    margin-top: 0;
+    cursor: pointer;
+}
+.fp1 {
+    text-align: left;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+.fp-m1 {
+    text-align: left;
+    margin-top: 0;
+    cursor: pointer;
+}
+.actions-container {
+    margin-top: 20px;
+}

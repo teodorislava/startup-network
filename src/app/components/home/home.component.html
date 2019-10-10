@@ -1,0 +1,227 @@
+<div>
+    <app-navigation></app-navigation>
+    <div class="main-content-container"> 
+        <div class="container-fluid">
+          <div class="container">
+              <div class="input-group mb-3 input-search">
+                  <input name="search-input" [(ngModel)]="search" type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-addon1">
+                  <div class="input-group-prepend post-button">
+                    <span (click)="searchPeople()" class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                  </div>
+              </div>
+          </div>
+          <div class="container results-container">
+            <div class="row">
+              <div *ngFor="let u of searchedUsers$ | async" class="col-3 result-container">
+                <div (click)="openUserInfo(u, userdetails)" class="search-result">
+                    {{ u.displayname }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+                <div *ngIf="user$ | async; let u" class="card">
+                    <img class="card-img-top profile-img" src="http://localhost:58986/File/ProfileThumbnail?uid={{ u.id }}&param=p" alt="Profile picture">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ u.displayname }}</h5>
+                      <p class="card-text">{{ u.bio }}</p>
+                      <p class="card-text">
+                        <button (click)="upload = !upload" class="btn btn-secondary">Upload Photo</button>
+                      </p>
+                      <p *ngIf="upload" class="card-text"> 
+                        <angular-file-uploader
+                          name="profile"
+                          [config]="afuConfig"
+                          (ApiResponse)="DocUpload($event)">
+                        </angular-file-uploader>
+                      </p>
+                    </div>
+                </div>
+                <div *ngIf="user$ | async; let u" class="card about-info">
+                  <div class="about-container">
+                    <h4> About ·  <button class="btn btn-secondary" (click)="openTech(tech)"> View Technologies </button></h4>
+                    <p class="about-row"><i class="fas fa-graduation-cap"></i>&nbsp; {{ u.school }}</p>
+                    <p class="about-row"><i class="fas fa-pen-fancy"></i>&nbsp; {{ u.profession }} </p>
+                    <p class="about-row"><i class="fas fa-briefcase"></i>&nbsp; {{ u.lastplaceworked }}</p>
+                    <p class="about-row"><i class="fa fa-home"></i>&nbsp; {{ u.hometown }}</p>
+                    <p class="about-row"><i class="fa fa-map-marker"></i>&nbsp; {{ u.livesin }}</p>
+                    <p class="about-row"><i class="fas fa-birthday-cake"></i>&nbsp; {{ u.birthday }}</p>
+                  </div>
+                </div>
+            </div>
+            <div class="col-6">
+              <div class="input-group mb-3 input-username">
+                  <input name="post-input" [(ngModel)]="post.content" type="text" class="form-control" placeholder="New Post" aria-label="Post" aria-describedby="basic-addon1">
+                  <div class="input-group-prepend post-button">
+                    <span (click)="addPost()" class="input-group-text" id="basic-addon1"><i class="fas fa-blog"></i></span>
+                  </div>
+              </div>
+              <div class="container feed-container">
+                <div *ngFor="let p of friendsPosts$ | async" class="row post-container">
+                  <div class="col-2 profile-picture-container">
+                    <img class="profile-picture" src="http://localhost:58986/File/ProfileThumbnail?uid={{ p.userid }}&param=t">
+                  </div>
+                  <div class="col-10">
+                    <h4 class="profile-name"> 
+                      {{ p.displayname }}  
+                      <label class="post-time"> {{ p.timestamp }} </label>
+                    </h4>
+                    <p class="post-content">
+                      {{ p.content }}
+                    </p>
+                    <p class="brains-p"> 
+                      <label class="mozak">🧠</label>
+                      {{ p.brains }}
+                      <label *ngIf="p.brains == 1"> brain </label>
+                      <label *ngIf="p.brains != 1"> brains </label>
+                      <label class="view-comments" (click)="viewComments(p.id)"> View comments </label>
+                    </p>
+                    <div class="comment-brain-section container">
+                      <div class="row">
+                        <div (click)="brainPost(p.id)" class="col-6 brain-part">
+                          <i class="fas fa-brain"></i>
+                          Brain
+                        </div>
+                        <div (click)="openWriteComment(p.id)" class="col-6 comment-part">
+                          <i class="far fa-comment"></i>
+                          Comment
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="p.id == writeComment" class="container write-comment-container">
+                        <div class="input-group mb-3 input-comment">
+                            <input name="write-comment" [(ngModel)]="comment" type="text" placeholder="Write comment..." autofocus class="form-control" aria-label="Comment" aria-describedby="basic-addon2">
+                            <div class="input-group-prepend post-button">
+                              <span (click)="postComment(p.id)" class="input-group-text" id="basic-addon2"><i class="fas fa-comment"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="commentsForPost == p.id" class="container view-comments-container">
+                        <div *ngFor="let c of comments$ | async" class="row">
+                            <p class="col-12 comment-container"> 
+                              <label class="comment-name"> {{ c.displayname }} </label> &nbsp;
+                              {{ c.content }} 
+                            </p>
+                            <p class="col-12 comment-timestamp"> {{ c.timestamp }}</p>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-3">
+                <div class="card pop-card">
+                  <div class="card-body">
+                    <h5 class="card-title">Popular Posts</h5>
+                    <div class="container">
+                        <div *ngFor="let p of popularPosts$ | async; let i = index">
+                          <div class="card-header">
+                            <h2 class="mb-0">
+                              <button (click)="handlePopular(p.id)" class="btn btn-link" type="button" data-toggle="collapse">
+                                  &#9733; {{ p.displayname }} &#9733;
+                              </button>
+                            </h2>
+                          </div>
+                          <div *ngIf="popularP == p.id" class="body card-body">
+                              {{ p.content }}
+                          </div>
+                        </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="card pop-card">
+                    <div class="card-body">
+                      <h5 class="card-title">Recommended Posts</h5>
+                      <div class="container">
+                          <div *ngFor="let p of recommendedPosts$ | async; let i = index">
+                            <div class="card-header">
+                              <h2 class="mb-0">
+                                <button (click)="handleRecomm(p.id)" class="btn btn-link" type="button" data-toggle="collapse">
+                                    &#9733; {{ p.displayname }} &#9733;
+                                </button>
+                              </h2>
+                            </div>
+                            <div *ngIf="recommendedP == p.id" class="body card-body">
+                                {{ p.content }}
+                            </div>
+                          </div>
+                          </div>
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+  <ng-template #userdetails>
+      <div class="modal-header">
+          <h4 class="modal-title pull-left">User Info</h4>
+          <button type="button" class="close pull-right" aria-label="Close" (click)="closeModalInfo('details')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-userdetails [user]="selectedUser"></app-userdetails>
+        </div>
+  </ng-template>
+  <ng-template #tech>
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Tecnologies</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModalInfo('tech')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <div class="col-3">
+              <div *ngFor="let t of userTechnologies$ | async" class="row">
+                  <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ t.name }} &nbsp; {{ t.skill }}</h5>
+                        <p class="card-text">{{ t.description }}</p>
+                      </div>
+                    </div>
+              </div>
+            </div>
+            <div class="col-5">
+                <div class="input-group mb-3 input-search">
+                    <input name="search-i" [(ngModel)]="searchTech" type="text" class="form-control" placeholder="Search Technology" aria-label="Search" aria-describedby="basic-addon1">
+                    <div class="input-group-prepend post-button">
+                      <span (click)="searchTechs()" class="input-group-text" id="basic-addon1"><i class="fas fa-search"></i></span>
+                    </div>
+                </div>
+                <div class="container">
+                  <div class="row">
+                    <p>Add technology you know!</p>
+                    <div *ngFor="let t of searchedTechs$ | async" class="col-12 tech">
+                      <div class="alert alert-primary" role="alert">
+                        <label class="tech-name" (click)="addUserTech(t)">{{ t.name }}</label> &nbsp;
+                        <input class="form-control" name="skill" [(ngModel)]="skill" placeholder="Enter Skill">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="col-4">
+              <p> Couldn't find your technology??</p>
+              <div class="form-group">
+                  <label for="exampleInpute">Technology Name</label>
+                  <input name="register-name" [(ngModel)]="technology.name" type="text" class="form-control" id="exampleInpute" placeholder="Name">
+              </div>
+              <div class="form-group">
+                  <label for="exampleInputp">Description</label>
+                  <input name="register-name" [(ngModel)]="technology.description" type="text" class="form-control" id="exampleInputp" placeholder="Description">
+              </div>
+              <div class="form-group">
+                  <label for="exampleInputli">Type</label>
+                  <input name="register-name" [(ngModel)]="technology.type" type="text" class="form-control" id="exampleInputli" placeholder="Type">
+              </div>
+              <p class="login-button-p"><button (click)="addTech()" type="submit" class="btn btn-secondary">Add Technology</button></p>
+            </div>
+          </div>
+        </div>
+      </div>
+</ng-template>
+</div>

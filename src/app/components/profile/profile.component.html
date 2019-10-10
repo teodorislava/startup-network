@@ -1,0 +1,106 @@
+<app-navigation></app-navigation>
+<div class="profile-container container-fluid">
+    <div class="row button-row">
+        <button (click)="editUser = !editUser" class="btn btn-secondary"> Edit User </button>
+    </div>
+    <div class="edit-user">   
+        <div *ngIf="editUser" class="row">
+            <div class="col-6 edit-form">
+            <form>
+                <div class="form-group">
+                    <label for="exampleInputName">Name</label>
+                    <input name="name" [(ngModel)]="user.displayname" type="text" class="form-control" id="exampleInputName" placeholder="Name">
+                </div>
+                    <div class="form-group">
+                        <label for="exampleInputlpw">Last Place of Work</label>
+                        <input name="last" [(ngModel)]="user.lastplaceworked" type="text" class="form-control" id="exampleInputlpw" placeholder="Last place of work">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInpute">Education</label>
+                        <input name="education" [(ngModel)]="user.school" type="text" class="form-control" id="exampleInpute" placeholder="Education">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputp">Profession</label>
+                        <input name="profession" [(ngModel)]="user.profession" type="text" class="form-control" id="exampleInputp" placeholder="Profession">
+                    </div>
+            </form>
+            </div>
+            <div class="col-6 edit-form">
+                <form>
+                    <div class="form-group">
+                            <label for="exampleInputli">Lives in</label>
+                            <input name="livesin" [(ngModel)]="user.livesin" type="text" class="form-control" id="exampleInputli" placeholder="Lives in">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputh">Hometown</label>
+                            <input name="hometown" [(ngModel)]="user.hometown" type="text" class="form-control" id="exampleInputh" placeholder="Hometown">
+                        </div>
+                        
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Bio</label>
+                        <textarea name="bio" [(ngModel)]="user.bio"class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                        </div>
+                    <p class="login-button-p"><button (click)="submitEditUser()" type="submit" class="btn btn-secondary">Submit</button></p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="user$ | async; let u" class="user-details-container container">
+        <h4 class="h2" *ngIf="!editUser">
+            User Info
+        </h4>
+      <div *ngIf="!editUser" class="row">
+        <div class="col-6">
+            <ul class="list-group list-group-flush lista">
+                <li class="list-group-item">Name: {{ u.displayname }}</li>
+                <li class="list-group-item">Email: {{ u.email }}</li>
+                <li class="list-group-item">Hometown: {{ u.hometown }}</li>
+                <li class="list-group-item">Lives in: {{ u.livesin }}</li>
+            </ul>
+        </div>
+        <div class="col-6">
+            <ul class="list-group list-group-flush lista">  
+                <li class="list-group-item">Birthday: {{ u.birthday }}</li>
+                <li class="list-group-item">Last worked at: {{ u.lastplaceworked }}</li>
+                <li class="list-group-item">Profession: {{ u.profession }}</li>    
+                <li class="list-group-item">Education: {{ u.school }}</li>
+            </ul>
+        </div>
+      </div>
+      <div *ngIf="!editUser" class="row">
+        <div class="col-12">
+            <ul class="list-group list-group-flush lista bio">  
+                <li class="list-group-item">Bio: {{ u.bio }}</li>
+            </ul>
+        </div>
+      </div> 
+      </div>
+      <div *ngIf="!editUser" class="container men-not">
+        <div class="row">
+            <div class="col-6 men">
+                <h4 class="h">
+                    Mentions
+                </h4>
+                <div>
+                    <div class="single-mention" *ngFor="let m of mentions$ | async">
+                       <p class="from-project">From: {{ m.displayname }}</p>
+                       <hr>
+                       <p>Content: {{ m.content }}</p>
+                    </div>   
+                </div>
+            </div>
+            <div class="col-6 not">
+                <h4 class="h">
+                    Notifications
+                </h4>
+                <div>
+                    <div class="single-notification" *ngFor="let m of notifications$ | async">
+                        <p class="from-project">From Project: {{ m.name }}</p>
+                        <hr>
+                        <p>Status: {{ m.status }}</p>
+                    </div>  
+                </div>
+            </div>
+        </div>
+      </div> 
+</div>

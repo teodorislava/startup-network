@@ -1,0 +1,117 @@
+.content-container {
+    margin-top: 20px;
+}
+.button-container-1 {
+    text-align: right;
+}
+.button-container-2 {
+    text-align: left;
+}
+.create-container {
+    background: white;
+    color: gray;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin-top: 20px;
+    height:fit-content;
+}
+.search-container {
+    background: white;
+    color: gray;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin-top: 20px;
+    height:fit-content;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.your-container {
+    background: white;
+    color: gray;
+    border: 2px solid white;
+    border-radius: 10px;
+    margin-top: 20px;
+    height:fit-content;
+}
+.create-project {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.create-h {
+    text-align: center;
+    font-weight: bold;
+    color: darkslategray;
+}
+.button-container-3 {
+    text-align: center;
+    margin-top: 10px;
+}
+.hot {
+    border: 2px solid white;
+    border-radius: 10px;
+    background-color: white;
+    color: #343a40;
+}
+.fa-fire {
+    color:orange;
+}
+.name-hot {
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #343a40;
+}
+.name-name {
+    font-style: italic;
+}
+.hot-description {
+    text-align: center;
+}
+.h {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #343a40;
+}
+i {
+    cursor: pointer;
+}
+.name-name-name {
+    cursor: pointer;
+    font-weight: bold;
+    color: #343a40;
+}
+.red {
+    color:red;
+}
+.green {
+    color:green;
+}
+.blue {
+    color:blue;
+}
+.search-project-container {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.projects-you {
+    margin-top: 10px;
+    border-top: 2px solid #343a40;
+    padding-top: 10px;
+}
+.des-p {
+    text-decoration: underline;
+}
+.apply-team {
+    cursor: pointer;
+}
+.your-project {
+    border: 2px solid #344a40;
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+.my-projects {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}

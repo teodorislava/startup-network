@@ -1,0 +1,82 @@
+User
+
+    username
+    display_name
+    profile_picture
+    pass
+    registry_date
+    email
+    type - investor, company, regular, consultant
+    active_projects [] :Project
+    past_projects []
+    interested_in []: User - kao prijatelji, koje usere je lajkovao i prati ih
+    experienced_in []: Technology - lista tehnologija koje zna
+    rating
+    bio
+    posts []:Post
+    teams []: Team
+    investments []: Investment - u sta je ulozio pare
+
+Project
+
+    total_investments []: Investment
+    funds_raised
+    creator []: User
+    description
+    start_date
+    end_date
+    milestones []: Milestone
+    status - enum - funding, in_progress, finished, failed
+    funding_goal_minimal
+    funding_goal_maximal
+    developers []:User
+    consultants []:User
+    technologies []:Technology - minimalno potrebno znanje iz neke tehnologije
+
+Technology
+
+    name
+    type
+    description
+    skill - realno znanje iz tehnologije
+
+Post
+
+    timestamp
+    user: User
+    comments []:Comment
+    brains
+    
+Team
+
+    name
+    description
+    users []:users
+    chat []:Message - ??????
+
+Comment
+
+    user
+    timestamp
+    content
+    post ?
+
+Message
+
+    user
+    timestamp
+    content
+    team ?
+
+Investment
+
+    investor :User
+    project :Project
+    return_type - roi, equity, services
+    investment_type - funds, consulting, infrastructure
+    contract_text
+    money_amount - ako je tip investicije funds
+    currency - valuta - -||-
+    consultants []:User
+    roi_percentage 
+    equity_percentage

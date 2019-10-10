@@ -1,0 +1,56 @@
+<div class="user-details-container container">
+    <div *ngIf="followSuccess$ | async" class="row">
+        <div class="alert alert-success" role="alert">
+            User followed!
+        </div>
+    </div>
+    <div *ngIf="addToTeamSuccess$ | async" class="row">
+        <div class="alert alert-success" role="alert">
+            User added to team!
+        </div>
+    </div>
+  <div class="row">
+    <div class="col-6">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Name: {{ user.displayname }}</li>
+            <li class="list-group-item">Email: {{ user.email }}</li>
+            <li class="list-group-item">Hometown: {{ user.hometown }}</li>
+            <li class="list-group-item">Lives in: {{ user.livesin }}</li>
+        </ul>
+    </div>
+    <div class="col-6">
+        <ul class="list-group list-group-flush">  
+            <li class="list-group-item">Birthday: {{ user.birthday }}</li>
+            <li class="list-group-item">Last worked at: {{ user.lastplaceworked }}</li>
+            <li class="list-group-item">Profession: {{ user.profession }}</li>    
+            <li class="list-group-item">Education: {{ user.school }}</li>
+        </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+        <ul class="list-group list-group-flush">  
+            <li class="list-group-item">Bio: {{ user.bio }}</li>
+        </ul>
+    </div>
+  </div> 
+  <div class="row actions-container">
+    <div class="col-6">
+      <div (click)="folUser()" class="follow-container">
+          <p class="fp"><i class="fas fa-plus sign"></i></p> 
+          <p class="fp-m">Follow</p>
+      </div>
+    </div>
+    <div class="col-6">
+      <div (click)="showTeams()" class="add-to-team-container">
+          <p class="fp1"><i class="fab fa-teamspeak sign"></i></p>
+          <p class="fp-m1"> Add To Team </p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div *ngFor="let t of teams$ | async" class="col-4">
+       <p (click)="addToTeam(t.id)"> {{ t.name }}</p>
+    </div>
+  </div>   
+</div>

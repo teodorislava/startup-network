@@ -1,0 +1,104 @@
+<div>
+  <app-navigation></app-navigation>
+  <div class="container-fluid teams-container">
+    <div class="row">
+        <div class="col-4 create-team">
+
+        </div>
+        <div class="col-4 create-team">
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">
+            Create New Team!
+          </button>
+          <div *ngIf="removeFromTeam$ | async" class="alert alert-success alert-dismissible fade show" role="alert">
+              <strong>Holy guacamole!</strong> You are removed from team!
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+        </div>
+        <div class="col-4 create-team">
+          </div>
+          <div class="modal fade create-team-modal" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalCenterTitle">Create Team</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Team Name</label>
+                          <input name="team-name" [(ngModel)]="team.name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter name">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">Description</label>
+                            <textarea name="team-description" [(ngModel)]="team.description" placeholder="Enter Description" class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
+                          </div>
+                      </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button (click)="createTeam()" type="button" class="btn btn-primary">Create Team</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+    </div>
+    <div class="container-fluid team-info-container">
+      <div class="row"> 
+        <div class="col-3">
+            <div *ngFor="let t of teams$ | async" class="row">
+                <div class="container team-details-container">
+                      <div class="card">
+                          <div class="row">
+                              <p class="team-name-p col-12">{{ t.name }}</p>
+                          </div>
+                          <div class="row">
+                              <div class="col-6 button-container">
+                                  <button (click)="showMembers(t.id, t.name)" type="button" class="btn btn-secondary">Members</button>
+                              </div>
+                              <div class="col-6 button-container">
+                                  <button (click)="showMessages(t.id, t.name)" type="button" class="btn btn-secondary">Messages</button>
+                              </div>
+                          </div>
+                  </div>
+                </div>   
+            </div>
+        </div>
+       <div *ngIf="teamId != -1 || teamMessagesId != -1" class="col-9 message-members">   
+        <div class="container">
+            <div *ngIf="teamId != -1" class="row message-members-container">
+              <h4 class="col-12 team-name-h"> {{ teamName }} </h4>
+              <div *ngFor="let m of teamMembers$ | async" class="col-3 members-container">
+                  <p>Name: {{ m.displayname }} <i (click)="leaveYourTeam()" *ngIf="m.id == this.userId" class="fas fa-trash-alt delete"></i> </p>
+                  <p>Email: {{ m.email }} </p>
+                  <p>Profession: {{ m.profession }} </p>
+              </div>
+            </div>
+            <div *ngIf="teamMessagesId != -1" class="row message-members-container">
+              <h4 class="col-12 team-name-h"> {{ teamNameMessage }}</h4>
+              <div class="col-12" *ngFor="let m of messages$ | async">
+                <div *ngIf="m.userid != userId" class="row name-container show-name">
+                  {{ m.displayname }}
+                </div>       
+                <p [class]= "m.userid == userId ? 'show-your-message' : 'show-message'">
+                  {{ m.content }}
+                </p>
+                </div>
+                <div class="input-group mb-3 input-message">
+                    <input (keyup)="checkKey($event)" name="message-input" [(ngModel)]="message.content" type="text" class="form-control" placeholder="Write message..." aria-label="Post" aria-describedby="basic-addon1">
+                    <div class="input-group-prepend message-button">
+                      <span (click)="sendMessage()" class="input-group-text" id="basic-addon1"><i class="fas fa-comment"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
